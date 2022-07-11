@@ -12,6 +12,7 @@ def create_app(config_type): # dev, test, or prod
     configuration = os.path.join(os.getcwd(), 'config', config_type + '.py')
     app.config.from_pyfile(configuration)
 
+    print('Initializing database...')
     db.init_app(app)
 
     from app.catalog import main
