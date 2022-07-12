@@ -26,7 +26,12 @@
                     <ul class="nav navbar-nav pull-right nav-list">
                         <li><a href=""> Home </a></li>
                         <li><a href=""> Register </a></li>
-                        <li><a href=""> Sign In </a></li>
+                            {% if current_user.is_authenticated %}
+                                <li><a href=""><b>Logged in as: {{ current_user.user_name.title() }}</b></a></li>
+                                <li><a href="" style="color: LightCoral">Log Out</a></li>
+                            {% else %}
+                                <li><a href=""> Log In </a></li>
+                            {% endif %}
                     </ul>
                 </div>
             </nav>

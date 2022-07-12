@@ -15,7 +15,7 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.user_password, password)
 
-    # Class methods belong to a class but are not associated wtih any class instance
+    # Class methods belong to a class but are not associated with any class instance
     @classmethod
     def create_user(cls, user, email, password):
         user = cls(user_name=user,
