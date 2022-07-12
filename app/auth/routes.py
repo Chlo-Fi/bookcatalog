@@ -1,5 +1,5 @@
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from app.auth.forms import RegistrationForm, LoginForm
 from app.auth import authentication as at
 from app.catalog import main
@@ -9,6 +9,10 @@ from app.auth.models import User
 def register_user():
 
     form = RegistrationForm()
+
+    if current_user.is_authenticated:
+        flash('User is already logged in.')
+        return redirect(url_for('main.display_books'))
 
     # Checks if POST request and validates data on registration form
     if form.validate_on_submit():
@@ -22,7 +26,9 @@ def register_user():
 
 @at.route('/login', methods=['GET', 'POST'])
 def complete_login():
-
+    if current_user.is_authenticated:
+        flash('User is already logged in.')
+        return redirect(url_for('main.display_books'))
     form = LoginForm()
 
     if form.validate_on_submit():
