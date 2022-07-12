@@ -1,14 +1,23 @@
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 from app.auth.forms import RegistrationForm
 from app.auth import authentication as at
+from app.auth.models import User
 
 @at.route('/register', methods = ['GET', 'POST'])
 def register_user():
-    name = None
-    email = None
-    form = RegistrationForm()
-    if request.method == 'POST':
-        name = form.name.data
-        email = form.email.data
 
-    return render_template('registration.html', form=form, name=name, email=email)
+    form = RegistrationForm()
+
+    # Checks if POST request and validates data on registration form
+    if form.validate_on_submit():
+        User.create_user(
+            user=form.name.data,
+            email=form.email.data,
+            password=form.password.data)
+        flash('Registration Successful')
+        return redirect(url_for('authentication.login_user'))
+    return render_template('registration.html', form=form)
+
+@at.route('/login', methods=['GET', 'POST'])
+def login_user():
+    return render_template('login.html')
